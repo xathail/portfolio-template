@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import { heroSection } from '../data/profile';
+
+const portfolioTitle = heroSection.greeting.split("Hi, I'm ")[1].split(" 👋")[0];
+const portfolioDescription = heroSection.tagline;
+---
+
+<Layout title={portfolioTitle} description={portfolioDescription} showFooter={true}>
+    <div class="initial-content">
+        <Hero />
+    </div>
+    <div class="locked-content">
+        <About />
+        <Projects />
+    </div>
+</Layout>
+
+<style>
+    .initial-content {
+        opacity: 1;
+        visibility: visible;
+        transition: opacity 0.5s ease;
+    }
+
+    .locked-content {
+        display: none;
+        opacity: 0;
+        visibility: hidden;
+    }
+
+    :global(.unlocked) .locked-content {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>

@@ -1,0 +1,122 @@
+---
+interface NavItem {
+    label: string;
+    href: string;
+}
+
+const navItems: NavItem[] = [
+    { label: "About", href: "/#about" },
+    { label: "Projects", href: "/#projects" }
+];
+---
+<nav class="nav-container">
+    <div class="nav-content">
+        <a href="/" class="logo">NM</a>
+        <div class="nav-links">
+            {navItems.map(item => (
+                <a href={item.href} class="nav-link" data-section={item.href.substring(1)}>{item.label}</a>
+            ))}
+        </div>
+        <slot />
+    </div>
+</nav>
+
+<script>
+    const observerOptions = {
+        root: null,
+        rootMargin: '-20% 0px -80% 0px',
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const activeSection = entry.target.id;
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('data-section') === activeSection);
+                });
+            }
+        });
+    }, observerOptions);
+
+    // Observe all sections
+    document.querySelectorAll('section[id]').forEach((section) => {
+        observer.observe(section);
+    });
+</script>
+
+<style>
+    .nav-container {
+        position: fixed;
+        top: 1rem;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;  /* Allow clicks to pass through the container */
+    }
+
+    .nav-content {
+        background: rgba(var(--bg-primary-rgb), 0.4);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 0.75rem 1.5rem;
+        border-radius: 9999px;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(var(--border-rgb), 0.1);
+        pointer-events: auto;  /* Re-enable clicks only on the actual nav content */
+        isolation: isolate;
+    }
+
+    .logo {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        text-decoration: none;
+        padding: 0.5rem;
+    }
+
+    .nav-links {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .nav-link {
+        color: var(--text-primary);
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+        position: relative;
+    }
+
+    .nav-link.active {
+        color: var(--primary-color);
+        background: var(--bg-secondary);
+    }
+
+    .nav-link:hover {
+        background: var(--bg-secondary);
+    }
+
+    @media (max-width: 768px) {
+        .nav-container {
+            top: 0.5rem;
+        }
+
+        .nav-content {
+            padding: 0.5rem 1rem;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+    }
+</style>

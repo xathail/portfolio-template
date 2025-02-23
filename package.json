@@ -1,0 +1,31 @@
+{
+  "name": "portfolio-template",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "A modern, responsive portfolio website template built with Astro",
+  "author": "Xathail <git@xathail.email>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "^12.2.1",
+    "astro": "^5.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.5",
+    "typescript": "^5.7.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xathail/portfolio-template"
+  },
+  "bugs": {
+    "url": "https://github.com/xathail/portfolio-template/issues"
+  },
+  "homepage": ""
+}

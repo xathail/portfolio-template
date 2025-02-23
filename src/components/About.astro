@@ -1,0 +1,621 @@
+---
+import { experiences, education, bioSection } from '../data/profile';
+---
+<section id="about" class="about">
+    <div class="about-content">
+        <h2 class="section-title" data-animate="fade-up">About Me</h2>
+        <p class="bio" data-animate="fade-up" data-delay="1">
+            {bioSection.text}
+        </p>
+        
+        <div class="tabs" data-animate="fade-up" data-delay="2">
+            <div class="tab-buttons" role="tablist">
+                <button 
+                    class="tab-button active" 
+                    role="tab" 
+                    aria-selected="true" 
+                    aria-controls="experience-panel"
+                    id="experience-tab"
+                >
+                    Experience
+                </button>
+                <button 
+                    class="tab-button" 
+                    role="tab" 
+                    aria-selected="false" 
+                    aria-controls="education-panel"
+                    id="education-tab"
+                >
+                    Education
+                </button>
+            </div>
+
+            <div class="tab-panels">
+                <div 
+                    class="tab-panel active" 
+                    id="experience-panel" 
+                    role="tabpanel" 
+                    aria-labelledby="experience-tab"
+                >
+                    <div class="timeline">
+                        {experiences.map((exp, index) => (
+                            <div class="timeline-item" data-animate="fade-left" data-delay={3 + index}>
+                                <div class="timeline-header">
+                                    <h4>{exp.role}</h4>
+                                    <span class="company">{exp.company}</span>
+                                    <span class="period">{exp.period}</span>
+                                </div>
+                                <p>{exp.description}</p>
+                                {exp.details && (
+                                    <button class="details-button" data-type="experience" data-index={experiences.indexOf(exp)}>
+                                        <span>See More Details</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M7 7l5 5 5-5"/>
+                                            <path d="M7 13l5 5 5-5"/>
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div 
+                    class="tab-panel" 
+                    id="education-panel" 
+                    role="tabpanel" 
+                    aria-labelledby="education-tab"
+                >
+                    <div class="timeline">
+                        {education.map((edu, index) => (
+                            <div class="timeline-item" data-animate="fade-left" data-delay={3 + index}>
+                                <div class="timeline-header">
+                                    <h4>{edu.degree}</h4>
+                                    <span class="company">{edu.school}</span>
+                                    <span class="period">{edu.period}</span>
+                                </div>
+                                <p>{edu.description}</p>
+                                {edu.details && (
+                                    <button class="details-button" data-type="education" data-index={education.indexOf(edu)}>
+                                        <span>See More Details</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M7 7l5 5 5-5"/>
+                                            <path d="M7 13l5 5 5-5"/>
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Details Modal -->
+<div class="details-modal" id="detailsModal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" aria-label="Close modal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="modal-header">
+            <h3 class="modal-title"></h3>
+            <div class="modal-subtitle">
+                <span class="modal-org"></span>
+                <span class="modal-period"></span>
+            </div>
+        </div>
+        <div class="modal-body">
+        </div>
+    </div>
+</div>
+
+<style>
+    .about {
+        padding: 2rem 0;
+        width: 100%;
+    }
+
+    .about-content {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+
+    .bio {
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+    }
+
+    .tabs {
+        margin-top: 1.5rem;
+    }
+
+    .tab-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 2px solid var(--bg-secondary);
+        padding-bottom: 0.5rem;
+    }
+
+    .tab-button {
+        background: none;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .tab-button::after {
+        content: '';
+        position: absolute;
+        bottom: -0.5rem;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--primary-color);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .tab-button.active {
+        color: var(--primary-color);
+    }
+
+    .tab-button.active::after {
+        transform: scaleX(1);
+    }
+
+    .tab-panels {
+        position: relative;
+        min-height: 200px;
+    }
+
+    .tab-panel {
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .tab-panel.active {
+        opacity: 1;
+        visibility: visible;
+        position: relative;
+    }
+
+    .timeline {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-top: 1.5rem;
+    }
+
+    .timeline-item {
+        padding-left: 1.5rem;
+        position: relative;
+        border-left: none;  /* Removed border-left */
+    }
+
+    .timeline-item::before {  /* Added timeline marker */
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.5rem;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+
+    .timeline-item:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+
+    .timeline-header {
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-header h4 {
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .company {
+        color: var(--primary-color);
+        margin-right: 1rem;
+    }
+
+    .period {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+        .tab-buttons {
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .tab-button {
+            width: 100%;
+            text-align: center;
+        }
+
+        .timeline-header {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .company {
+            margin-right: 0;
+        }
+    }
+
+    .details-button {
+        margin-top: 1rem;
+        background: none;
+        border: none;
+        color: var(--primary-color);
+        cursor: pointer;
+        font-size: 0.9rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .details-button:hover {
+        text-decoration: underline;
+    }
+
+    /* Modal Styles */
+    .details-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 1000;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+
+    .details-modal.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(0px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .details-modal.active .modal-overlay {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+        position: relative;
+        background: var(--bg-primary);
+        width: 90%;
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        max-height: calc(100vh - 4rem);
+        overflow-y: auto;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .details-modal.active .modal-content {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        color: var(--text-secondary);
+        cursor: pointer;
+        padding: 0.5rem;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+        background: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+
+    .modal-header {
+        margin-bottom: 2rem;
+    }
+
+    .modal-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-subtitle {
+        display: flex;
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+    }
+
+    .modal-org {
+        color: var(--primary-color);
+    }
+
+    .modal-body {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .detail-section {
+        border-bottom: 1px solid var(--bg-secondary);
+        padding-bottom: 1.5rem;
+    }
+
+    .detail-section:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .detail-section h4 {
+        color: var(--primary-color);
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+    }
+
+    .detail-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .detail-section li {
+        position: relative;
+        width: 0.5rem;
+        height: 0.5rem;
+        background: var(--primary-color);
+        border-radius: 50%;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modal-content {
+        animation: modalFadeIn 0.3s ease-out;
+    }
+
+    .details-content {
+        max-width: 600px;
+        padding: 2rem;
+    }
+
+    .details-content h3 {
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        color: var(--text-primary);
+    }
+
+    .details-content ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .details-content li {
+        margin-bottom: 1.25rem;
+        line-height: 1.6;
+        color: var(--text-secondary);
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 0.5rem;
+    }
+
+    .details-content li:last-child {
+        margin-bottom: 0;
+    }
+
+    .details-content li strong {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+
+    .details-content[data-section="Additional Modules"] li {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+
+    .details-content[data-section="Additional Modules"] li::before {
+        content: "•";
+        position: absolute;
+        left: 0.5rem;
+        color: var(--primary-color);
+    }
+
+    @media (max-width: 768px) {
+        .details-content {
+            max-width: 100%;
+            padding: 1.5rem;
+        }
+    }
+
+    dialog[data-type="details"] {
+        background: var(--bg-primary);
+        border: none;
+        border-radius: 1rem;
+        padding: 0;
+        max-width: min(90vw, 650px);
+        width: 100%;
+        margin: 2rem auto;
+        animation: dialogSlide 0.3s ease-out;
+        box-shadow: 0 4px 32px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.3s ease;
+    }
+
+    @keyframes dialogSlide {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+    }
+</style>
+
+<script define:vars={{ experiences, education }}>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        tabButtons.forEach((button) => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and panels
+                tabButtons.forEach((btn) => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                });
+                tabPanels.forEach((panel) => panel.classList.remove('active'));
+
+                // Add active class to clicked button and its panel
+                button.classList.add('active');
+                button.setAttribute('aria-selected', 'true');
+                const panelId = button.getAttribute('aria-controls');
+                if (panelId) {
+                    const panel = document.getElementById(panelId);
+                    if (panel) {
+                        panel.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        const modal = document.querySelector('.details-modal');
+        const modalOverlay = modal?.querySelector('.modal-overlay');
+        const modalClose = modal?.querySelector('.modal-close');
+        const modalTitle = modal?.querySelector('.modal-title');
+        const modalOrg = modal?.querySelector('.modal-org');
+        const modalPeriod = modal?.querySelector('.modal-period');
+        const modalBody = modal?.querySelector('.modal-body');
+
+        function openModal(data) {
+            if (!modal || !modalTitle || !modalOrg || !modalPeriod || !modalBody) return;
+
+            modalTitle.textContent = data.degree || data.role;
+            modalOrg.textContent = data.school || data.company;
+            modalPeriod.textContent = data.period;
+
+            // Clear and populate modal body
+            modalBody.innerHTML = '';
+            if (data.details) {
+                data.details.forEach((section) => {
+                    const sectionEl = document.createElement('div');
+                    sectionEl.className = 'detail-section';
+                    sectionEl.setAttribute('data-section', section.title);
+                    
+                    const title = document.createElement('h4');
+                    title.textContent = section.title;
+                    sectionEl.appendChild(title);
+
+                    const list = document.createElement('ul');
+                    section.items.forEach((item) => {
+                        const li = document.createElement('li');
+                        li.textContent = item;
+                        list.appendChild(li);
+                    });
+                    sectionEl.appendChild(list);
+
+                    modalBody.appendChild(sectionEl);
+                });
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            if (!modal) return;
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners for opening modal
+        document.querySelectorAll('.details-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const type = button.getAttribute('data-type');
+                const index = parseInt(button.getAttribute('data-index') || '0');
+                const data = type === 'education' ? education[index] : experiences[index];
+                openModal(data);
+            });
+        });
+
+        // Event listeners for closing modal
+        modalOverlay?.addEventListener('click', closeModal);
+        modalClose?.addEventListener('click', closeModal);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    });
+</script>

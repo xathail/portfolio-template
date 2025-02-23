@@ -1,0 +1,302 @@
+---
+import Navigation from '../components/Navigation.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import Footer from '../components/Footer.astro';
+import SwipeUnlock from '../components/SwipeUnlock.astro';
+
+interface Props {
+	title?: string;
+	description?: string;
+	showFooter?: boolean;
+}
+const { 
+	title = "My Portfolio", 
+	description = "Welcome to my personal portfolio",
+	showFooter = false 
+} = Astro.props;
+---
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<title>{title}</title>
+	</head>
+	<body class="flex-layout">
+		<div class="splash-screen">
+			<div class="splash-content">
+				<img src="/favicon.svg" alt="Logo" class="splash-logo">
+				<div class="loading-dots">
+					<span></span>
+					<span></span>
+					<span></span>
+				</div>
+			</div>
+		</div>
+		<Navigation>
+			<ThemeToggle />
+		</Navigation>
+		<main class="flex-grow">
+			<div class="content-container initial">
+				<slot />
+			</div>
+			<SwipeUnlock />
+			{showFooter && <Footer />}
+		</main>
+	</body>
+</html>
+<style is:global>
+	:root {
+		--primary-color: #2563eb;
+			--primary-color-rgb: 37, 99, 235;
+		--text-primary: #1f2937;
+		--text-secondary: #4b5563;
+		--bg-primary: #ffffff;
+		--bg-secondary: #f3f4f6;
+		--theme-transition: background-color 0.2s ease, color 0.2s ease;
+		--bg-primary-rgb: 255, 255, 255;
+		--border-rgb: 0, 0, 0;
+		--nav-height: 5rem;
+	}
+
+	:root.dark {
+		--primary-color: #60a5fa;
+			--primary-color-rgb: 96, 165, 250;
+		--text-primary: #f3f4f6;
+		--text-secondary: #d1d5db;
+		--bg-primary: #111827;
+		--bg-secondary: #1f2937;
+		--bg-primary-rgb: 17, 24, 39;
+		--border-rgb: 255, 255, 255;
+	}
+	
+	html {
+		font-family: 'Inter', system-ui, sans-serif;
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		transition: var(--theme-transition);
+		scroll-padding-top: var(--nav-height);
+		height: 100%;
+	}
+
+	body {
+		margin: 0;
+		padding: 0;
+		min-height: 100%;
+	}
+
+	.flex-layout {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+	}
+
+	.flex-grow {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	main {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1rem;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin: 0;
+		font-weight: 600;
+		line-height: 1.2;
+		transition: var(--theme-transition);
+	}
+
+	p {
+		line-height: 1.6;
+		color: var(--text-secondary);
+		transition: var(--theme-transition);
+	}
+
+	*, *::before, *::after {
+		transition: var(--theme-transition);
+	}
+
+	.splash-screen {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: var(--bg-primary);
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 9999;
+		opacity: 1;
+		transition: opacity 0.3s ease-out;
+		pointer-events: none;
+	}
+
+	.splash-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	.splash-screen.hidden {
+		opacity: 0;
+	}
+
+	.splash-logo {
+		width: 64px;
+		height: 64px;
+		animation: pulse 2s infinite;
+	}
+
+	@keyframes pulse {
+		0% { transform: scale(1); }
+		50% { transform: scale(1.1); }
+		100% { transform: scale(1); }
+	}
+
+	.loading-dots {
+		display: flex;
+		gap: 8px;
+		justify-content: center;
+	}
+
+	.loading-dots span {
+		width: 8px;
+		height: 8px;
+		background: var(--primary-color);
+		border-radius: 50%;
+		animation: dots 1.5s infinite;
+	}
+
+	.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+	.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+	@keyframes dots {
+		0%, 100% { transform: scale(0.3); opacity: 0.3; }
+		50% { transform: scale(1); opacity: 1; }
+	}
+
+	/* Animation classes */
+	[data-animate] {
+		opacity: 0;
+		transform: translateY(20px) scale(0.95);
+		transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+					transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	[data-animate].animate {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+
+	[data-animate="fade-left"] {
+		transform: translateX(-20px) scale(0.95);
+	}
+
+	[data-animate="fade-right"] {
+		transform: translateX(20px) scale(0.95);
+	}
+
+	[data-animate="fade-up"] {
+		transform: translateY(20px) scale(0.95);
+	}
+
+	[data-animate="fade-down"] {
+		transform: translateY(-20px) scale(0.95);
+	}
+
+	[data-animate].animate {
+		transform: translate(0) scale(1);
+	}
+
+	/* Stagger delays */
+	[data-delay="1"] { transition-delay: 0.1s; }
+	[data-delay="2"] { transition-delay: 0.2s; }
+	[data-delay="3"] { transition-delay: 0.3s; }
+	[data-delay="4"] { transition-delay: 0.4s; }
+	[data-delay="5"] { transition-delay: 0.5s; }
+
+	.locked-content {
+		display: none;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	footer {
+		display: none;
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.hidden {
+		opacity: 0 !important;
+		pointer-events: none !important;
+		visibility: hidden !important;
+		transition: opacity 0.3s ease, visibility 0.3s ease !important;
+	}
+</style>
+
+<script>
+	import { setupScrollAnimation } from '../utils/animations';
+
+	// This script ensures the theme is applied immediately to avoid flash of incorrect theme
+	const theme = (() => {
+		if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+			return localStorage.getItem('theme');
+		}
+		if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+			return 'dark';
+		}
+		return 'light';
+	})();
+
+	if (theme === 'dark') {
+		document.documentElement.classList.add('dark');
+	}
+
+	// Handle splash screen
+	window.addEventListener('load', () => {
+		const splashScreen = document.querySelector('.splash-screen') as HTMLElement;
+		const lockedContent = document.querySelector('.locked-content') as HTMLElement;
+		const footer = document.querySelector('footer') as HTMLElement;
+
+		if (localStorage.getItem('portfolioUnlocked') === 'true') {
+			if (lockedContent) {
+				lockedContent.style.display = 'block';
+				lockedContent.style.opacity = '1';
+				lockedContent.style.visibility = 'visible';
+			}
+			if (footer) {
+				footer.style.display = 'block';
+				footer.style.opacity = '1';
+				footer.style.visibility = 'visible';
+			}
+		}
+
+		if (splashScreen) {
+			setTimeout(() => {
+				splashScreen.classList.add('hidden');
+				setTimeout(() => {
+					splashScreen.remove();
+				}, 300);
+			}, 1500);
+		}
+	});
+
+	// Setup animations
+	document.addEventListener('DOMContentLoaded', () => {
+		setupScrollAnimation();
+	});
+</script>

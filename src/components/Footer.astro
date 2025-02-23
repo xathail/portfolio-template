@@ -1,0 +1,201 @@
+---
+import { contactInfo } from '../data/profile';
+const currentYear = new Date().getFullYear();
+---
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section links">
+            <ul class="social-links">
+                <li>
+                    <a href={contactInfo.github} target="_blank" rel="noopener noreferrer" class="social-link">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                        </div>
+                        <span>GitHub</span>
+                    </a>
+                </li>
+                <li>
+                    <a href={contactInfo.linkedin} target="_blank" rel="noopener noreferrer" class="social-link">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                                <rect x="2" y="9" width="4" height="12"></rect>
+                                <circle cx="4" cy="4" r="2"></circle>
+                            </svg>
+                        </div>
+                        <span>LinkedIn</span>
+                    </a>
+                </li>
+                <li>
+                    <a href={`mailto:${contactInfo.email}`} class="social-link">
+                        <div class="icon-wrapper">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                <polyline points="22,6 12,13 2,6"></polyline>
+                            </svg>
+                        </div>
+                        <span>Email</span>
+                    </a>
+                </li>
+            </ul>
+            <p class="copyright">&copy; {currentYear} {contactInfo.name}</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        padding: 1.5rem 0;
+        position: relative;
+        border-top: 1px solid rgba(var(--border-rgb), 0.1);
+    }
+
+    .footer::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(
+            90deg,
+            transparent 0%,
+            var(--primary-color) 20%,
+            var(--primary-color) 80%,
+            transparent 100%
+        );
+        opacity: 0.15;
+        filter: blur(1px);
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .footer-section.links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .social-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 2rem;
+        justify-content: center;
+    }
+
+    .social-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                    color 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .icon-wrapper {
+        background: rgba(var(--bg-primary-rgb), 0.1);
+        padding: 0.625rem;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .icon-wrapper::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: var(--primary-color);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .icon-wrapper svg {
+        position: relative;
+        z-index: 1;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .social-link:hover {
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
+
+    .social-link:hover .icon-wrapper {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px -5px rgba(var(--primary-color-rgb), 0.4);
+    }
+
+    .social-link:hover .icon-wrapper::before {
+        opacity: 0.1;
+    }
+
+    .social-link:hover .icon-wrapper svg {
+        transform: scale(1.1);
+    }
+
+    .copyright {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        opacity: 0.8;
+        text-align: center;
+        position: relative;
+        padding-top: 1rem;
+    }
+
+    .copyright::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3rem;
+        height: 1px;
+        background: var(--text-secondary);
+        opacity: 0.2;
+    }
+
+    @media (max-width: 768px) {
+        .social-links {
+            gap: 2.5rem;
+        }
+        
+        .icon-wrapper {
+            padding: 0.75rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .footer {
+            padding: 2rem 0;
+        }
+
+        .social-links {
+            gap: 2rem;
+        }
+
+        .icon-wrapper {
+            padding: 0.625rem;
+        }
+
+        .social-link span {
+            font-size: 0.75rem;
+        }
+    }
+</style>

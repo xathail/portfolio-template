@@ -1,0 +1,111 @@
+---
+import { heroSection } from '../data/profile';
+
+interface Props {
+    name?: string;
+    title?: string;
+    description?: string;
+}
+
+const { 
+    name = heroSection.greeting, 
+    title = heroSection.title, 
+    description = heroSection.tagline 
+} = Astro.props;
+---
+<section class="hero">
+    <div class="content">
+        <h1 data-animate="fade-up">{name}</h1>
+        <h2 data-animate="fade-up" data-delay="1">{title}</h2>
+        <p data-animate="fade-up" data-delay="2">{description}</p>
+    </div>
+</section>
+
+<style>
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .content {
+        max-width: 800px;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+        margin-bottom: 0.75rem;
+        color: var(--text-secondary);
+    }
+
+    p {
+        font-size: 1.125rem;
+        margin-bottom: 1.25rem;
+        max-width: 600px;
+    }
+
+    .cta {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .primary-button, .secondary-button {
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .primary-button {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .primary-button:hover {
+        background-color: color-mix(in srgb, var(--primary-color) 80%, black);
+    }
+
+    .secondary-button {
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+    }
+
+    .secondary-button:hover {
+        background-color: color-mix(in srgb, var(--bg-secondary) 80%, black);
+    }
+
+    @media (max-width: 768px) {
+        .hero {
+            padding: 2rem 0;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
+
+        .cta {
+            flex-direction: column;
+        }
+
+        .primary-button, .secondary-button {
+            text-align: center;
+        }
+    }
+</style>

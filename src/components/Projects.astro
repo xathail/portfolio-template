@@ -1,0 +1,187 @@
+---
+import { projects } from '../data/projects';
+
+const featuredProjects = projects.filter(p => p.featured);
+const otherProjects = projects.filter(p => !p.featured);
+---
+<section id="projects" class="projects">
+    <h2 class="section-title" data-animate="fade-up">Featured Projects</h2>
+    <div class="projects-grid">
+        {featuredProjects.map((project, index) => (
+            <article class="project-card featured" data-animate="fade-up" data-delay={index + 1}>
+                <h3>{project.title}</h3>
+                <p>{project.description}</p>
+                <div class="tags">
+                    {project.tags.map(tag => (
+                        <span class="tag">{tag}</span>
+                    ))}
+                </div>
+                <a href={`/projects/${project.id}`} class="project-link">View Project →</a>
+            </article>
+        ))}
+    </div>
+
+    {otherProjects.length > 0 && (
+        <div class="more-projects" data-animate="fade-up" data-delay="3">
+            <button class="toggle-projects" aria-expanded="false" aria-controls="other-projects">
+                <span class="toggle-text">Show More Projects</span>
+                <span class="count">({otherProjects.length})</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="chevron">
+                    <path d="M6 9l6 6 6-6"/>
+                </svg>
+            </button>
+            <div id="other-projects" class="projects-grid collapsed">
+                {otherProjects.map((project, index) => (
+                    <article class="project-card" data-animate="fade-up" data-delay={index + 1}>
+                        <h3>{project.title}</h3>
+                        <p>{project.description}</p>
+                        <div class="tags">
+                            {project.tags.map(tag => (
+                                <span class="tag">{tag}</span>
+                            ))}
+                        </div>
+                        <a href={`/projects/${project.id}`} class="project-link">View Project →</a>
+                    </article>
+                ))}
+            </div>
+        </div>
+    )}
+</section>
+
+<style>
+    .projects {
+        padding: 2rem 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .project-card {
+        background: var(--bg-secondary);
+        padding: 1.5rem;
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .project-card:hover {
+        transform: translateY(-4px);
+    }
+
+    .project-card.featured {
+        border: 2px solid var(--accent);
+    }
+
+    .project-card h3 {
+        margin: 0 0 1rem 0;
+        font-size: 1.5rem;
+    }
+
+    .project-card p {
+        margin: 0 0 1rem 0;
+        color: var(--text-secondary);
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tag {
+        background: var(--bg-secondary);
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+        transition: all 0.2s ease-in-out;
+    }
+
+    .tag:hover {
+        background: color-mix(in srgb, var(--bg-secondary) 90%, var(--primary-color));
+        transform: translateY(-1px);
+    }
+
+    .project-link {
+        display: inline-block;
+        text-decoration: none;
+        color: var(--accent);
+        font-weight: 500;
+    }
+
+    .more-projects {
+        margin-top: 2rem;
+    }
+
+    .toggle-projects {
+        background: none;
+        border: 2px solid var(--accent);
+        color: var(--text-primary);
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0 auto;
+    }
+
+    .toggle-projects .count {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    .toggle-projects .chevron {
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .toggle-projects[aria-expanded="true"] .chevron {
+        transform: rotate(180deg);
+    }
+
+    #other-projects {
+        margin-top: 2rem;
+        transition: max-height 0.3s ease-in-out;
+    }
+
+    #other-projects.collapsed {
+        display: none;
+    }
+</style>
+
+<script>
+    const toggleButton = document.querySelector('.toggle-projects');
+    const otherProjects = document.querySelector('#other-projects');
+    const toggleText = document.querySelector('.toggle-text');
+
+    if (toggleButton && otherProjects && toggleText) {
+        toggleButton.addEventListener('click', () => {
+            const isExpanded = toggleButton.getAttribute('aria-expanded') === 'true';
+            toggleButton.setAttribute('aria-expanded', !isExpanded ? 'true' : 'false');
+            toggleText.textContent = isExpanded ? 'Show More Projects' : 'Show Less Projects';
+            otherProjects.classList.toggle('collapsed');
+
+            // Re-trigger animations for other projects when shown
+            if (!isExpanded) {
+                const animatedElements = otherProjects.querySelectorAll('[data-animate]');
+                animatedElements.forEach((el) => {
+                    el.classList.remove('animate');
+                    // Force reflow with proper type casting
+                    (el as HTMLElement).offsetHeight;
+                    el.classList.add('animate');
+                });
+            }
+        });
+    }
+</script>
