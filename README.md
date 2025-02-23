@@ -40,6 +40,43 @@ To preview the production build:
 npm run preview
 ```
 
+## Deployment on Cloudflare Pages
+
+This template is configured to work with Cloudflare Pages out of the box. To deploy:
+
+1. Push your code to a GitHub repository
+
+2. Log in to the Cloudflare dashboard and go to "Pages"
+
+3. Click "Create a project" and select "Connect to Git"
+
+4. Select your repository and click "Begin setup"
+
+5. Configure your build settings:
+   - Framework preset: Astro
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+   - Environment variables (optional):
+     - `NODE_VERSION`: `16` or higher
+
+6. Click "Save and Deploy"
+
+Your site will be deployed to a `.pages.dev` domain. You can also configure a custom domain in the Cloudflare Pages settings.
+
+### Environment Variables
+
+If you need to configure environment variables:
+
+1. Go to your project in Cloudflare Pages
+2. Navigate to Settings > Environment variables
+3. Add your variables for both Production and Preview environments
+
+### Troubleshooting
+
+- If you encounter build errors, ensure your Node.js version is 16 or higher
+- Check the build logs in Cloudflare Pages for detailed error messages
+- Make sure all dependencies are properly listed in `package.json`
+
 ## Project Structure
 
 ```
