@@ -1,4 +1,6 @@
 ---
+import { contactInfo } from '../data/profile';
+
 interface NavItem {
     label: string;
     href: string;
@@ -8,10 +10,16 @@ const navItems: NavItem[] = [
     { label: "About", href: "/#about" },
     { label: "Projects", href: "/#projects" }
 ];
+
+const initials = contactInfo.name
+    .split(' ')
+    .map(word => word[0])
+    .join('')
+    .toUpperCase();
 ---
 <nav class="nav-container">
     <div class="nav-content">
-        <a href="/" class="logo">NM</a>
+        <a href="/" class="logo">{initials}</a>
         <div class="nav-links">
             {navItems.map(item => (
                 <a href={item.href} class="nav-link" data-section={item.href.substring(1)}>{item.label}</a>
